@@ -171,18 +171,14 @@ class Rolling:
             potato.dir = 1
             potato.turn -= 1
             potato.case_num = 0
+            potato.collision_ok = 0
             potato.state_machine.cur_state = Idle
-            if potato.crash == 10:
-                potato.turn = 0
             if potato.turn == 0:
                 potato.turn = 2
                 if potato.player == 0:
                     potato.player = 1
                 else:
                     potato.player = 0
-                print('player')
-                print(potato.player + 1)
-                print('turn')
                 play_mode.next_stage()
             return
 
@@ -197,9 +193,11 @@ class Rolling:
     @staticmethod
     def draw(potato):
         if potato.player == 0:
-            potato.image.clip_composite_draw(0, 0, 150, 150, potato.spin, 'r', potato.x, potato.y + 20, potato.size, potato.size)
+            potato.image.clip_composite_draw(0, 0, 150, 150, potato.spin, 'r', potato.x, potato.y + 20, potato.size,
+                                             potato.size)
         elif potato.player == 1:
-            potato.image2.clip_composite_draw(0, 0, 150, 150, potato.spin, 'r', potato.x, potato.y + 20, potato.size, potato.size)
+            potato.image2.clip_composite_draw(0, 0, 150, 150, potato.spin, 'r', potato.x, potato.y + 20, potato.size,
+                                              potato.size)
 
 
 class Giant:
@@ -232,7 +230,6 @@ class Giant:
                     potato.bb += 50
                 else:
                     potato.state_machine.cur_state = Idle
-
 
     @staticmethod
     def exit(potato, e):
@@ -282,6 +279,7 @@ class StateMachine:
 class Potato:
     def __init__(self, x=300, y=90):
         self.player = 0
+        self.collision_ok = 0
         self.x, self.y = x, y
         self.spin = 0
         self.power = 0
@@ -292,7 +290,6 @@ class Potato:
         self.size = 150
         self.speed = 5
         self.bb = 0
-        self.crash = 0
         self.p1_ability = 2
         self.p2_ability = 2
         self.image = load_image('Resource\\Potato\\normal1.png')
@@ -308,11 +305,41 @@ class Potato:
 
     def draw(self):
         self.state_machine.draw()
-        draw_rectangle(*self.get_bb())
+        draw_rectangle(*self.get_bb_r())
+        draw_rectangle(*self.get_bb_c_1())
+        draw_rectangle(*self.get_bb_c_2())
+        draw_rectangle(*self.get_bb_c_3())
+        draw_rectangle(*self.get_bb_c_4())
+        draw_rectangle(*self.get_bb_c_5())
+        draw_rectangle(*self.get_bb_c_6())
 
-    def get_bb(self):
+    def get_bb_r(self):
         return self.x - self.bb - 10, self.y - self.bb, self.x + self.bb + 10, self.y + self.bb + 20
 
-    def handle_collision(self, group, other):
-        if group == 'potato:bottle':
+    def get_bb_c_1(self):
+        return self.x - 12, self.y + 2, self.x + 12, self.y + 54
+
+    def get_bb_c_2(self):
+        return self.x - 15, self.y + 5, self.x + 15, self.y + 51
+
+    def get_bb_c_3(self):
+        return self.x - 18, self.y + 8, self.x + 18, self.y + 48
+
+    def get_bb_c_4(self):
+        return self.x - 21, self.y + 11, self.x + 21, self.y + 45
+
+    def get_bb_c_5(self):
+        return self.x - 24, self.y + 13, self.x + 24, self.y + 42
+
+    def get_bb_c_6(self):
+        return self.x - 27, self.y + 17, self.x + 27, self.y + 39
+
+    def handle_collision_r(self, group, other):
+        # 사각형과 사각형 충돌
+        if group == 'bottle:potato(r)':
+            pass
+
+    def handle_collision_c(self, group, other):
+        # 사각형과 원 충돌
+        if group == 'bottle:potato(c)':
             pass

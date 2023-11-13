@@ -72,7 +72,7 @@ class Bottle:
 
     def draw(self):
         self.state_machine.draw()
-        draw_rectangle(*self.get_bb())
+        draw_rectangle(*self.get_bb_r())
 
     def handle_event(self, event):
         pass
@@ -80,12 +80,18 @@ class Bottle:
     def update(self):
         self.state_machine.update()
 
-    def get_bb(self):
+    def get_bb_r(self):
         return self.x - 20, self.y - 50, self.x + 20, self.y + 50
 
-    def handle_collision(self, group, other):
-        if group == 'potato:bottle':
-            if self.state_machine.cur_state == Idle:
-                # potato.crash += 1
-                pass
-            self.state_machine.cur_state = Fly
+    def handle_collision_r(self, group, other):
+        # 사각형과 사각형 충돌
+        if group == 'bottle:potato(r)':
+            if play_mode.potato.collision_ok == 1:
+                self.state_machine.cur_state = Fly
+
+    def handle_collision_c(self, group, other):
+        # 사각형과 원 충돌
+        if group == 'bottle:potato(c)':
+            # 사각형과 사각형 충돌이 가능하게 됨
+            play_mode.potato.collision_ok = 1
+            print(play_mode.potato.collision_ok)

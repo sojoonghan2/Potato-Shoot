@@ -64,10 +64,12 @@ def init():
     # 감자
     potato = Potato(270, 100)
     game_world.add_object(potato, 2)
-    game_world.add_collision_pair('potato:bottle', potato, None)
+    game_world.add_collision_pair('bottle:potato(r)', None, potato)
+    game_world.add_collision_pair('bottle:potato(c)', None, potato)
 
     for i in range(10):
-        game_world.add_collision_pair('potato:bottle', None, bottle[i])
+        game_world.add_collision_pair('bottle:potato(r)', bottle[i], None)
+        game_world.add_collision_pair('bottle:potato(c)', bottle[i], None)
 
 
 def finish():
@@ -113,5 +115,6 @@ def next_stage():
     # bottle을 지우고 bottle2를 만들고 bottle2를 bottle에 넣으면 오류가 안남 왜지??
     for i in range(10):
         bottle[i] = bottle2[i]
-        game_world.add_collision_pair('potato:bottle', None, bottle[i])
+        game_world.add_collision_pair('bottle:potato(r)', bottle[i], None)
+        game_world.add_collision_pair('bottle:potato(c)', bottle[i], None)
     game_world.add_objects(bottle, 2)
