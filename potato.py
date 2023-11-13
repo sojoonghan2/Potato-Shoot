@@ -1,5 +1,5 @@
-from pico2d import load_image, draw_rectangle, SDL_BUTTON_LEFT
-from sdl2 import SDL_KEYDOWN, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_SPACE, SDL_MOUSEBUTTONDOWN, SDL_MOUSEBUTTONUP
+from pico2d import load_image, draw_rectangle
+from sdl2 import SDL_KEYDOWN, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_SPACE, SDLK_a
 
 import play_mode
 from point import Point
@@ -23,10 +23,7 @@ def space_down(e): return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].
 def space_up(e): return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_SPACE
 
 
-def mouse_down(e): return e[0] == 'INPUT' and e[1].type == SDL_MOUSEBUTTONDOWN and e[1].key == SDL_BUTTON_LEFT
-
-
-def mouse_up(e): return e[0] == 'INPUT' and e[1].type == SDL_MOUSEBUTTONUP and e[1].key == SDL_BUTTON_LEFT
+def a_down(e): return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_a
 
 
 # 대기
@@ -96,7 +93,7 @@ class PowerCharging:
     @staticmethod
     def exit(potato, e):
         potato.speed -= potato.power / 100
-        potato.bb = potato.power
+        potato.bb += potato.power
 
     @staticmethod
     def draw(potato):
@@ -182,15 +179,47 @@ class Rolling:
                                          potato.size)
 
 
+class Giant:
+    @staticmethod
+    def do(potato):
+        if potato.size < 200:
+            potato.size += 0.1
+        else:
+            potato.state_machine.cur_state = Idle
+
+    @staticmethod
+    def enter(potato, e):
+        # 능력 발동을 한 상태가 아니면(중복 방지)
+        if potato.size < 200:
+            # 능력 개수가 0이 아니면
+            if potato.ability > 0:
+                # 능력 개수를 1 깎음
+                potato.ability -= 1
+                # bb 범위 증가
+                potato.bb += 50
+            else:
+                potato.state_machine.cur_state = Idle
+
+    @staticmethod
+    def exit(potato, e):
+        pass
+
+    @staticmethod
+    def draw(potato):
+        potato.image.clip_composite_draw(0, 0, 150, 150, 0, 'r', potato.x, potato.y + 20, potato.size, potato.size)
+
+
 class StateMachine:
     def __init__(self, potato):
         self.potato = potato
         self.cur_state = Idle
         self.table = {
-            Idle: {right_down: Moving, left_down: Moving, left_up: Moving, right_up: Moving, space_down: PowerCharging},
+            Idle: {right_down: Moving, left_down: Moving, left_up: Moving, right_up: Moving, space_down: PowerCharging,
+                   a_down: Giant},
             Moving: {right_down: Idle, left_down: Idle, left_up: Idle, right_up: Idle},
             PowerCharging: {space_down: AngleAdjustment},
             AngleAdjustment: {space_down: Rolling},
+            Giant: {},
             Rolling: {}
         }
 
@@ -227,6 +256,7 @@ class Potato:
         self.speed = 5
         self.bb = 0
         self.crash = 0
+        self.ability = 2
         self.image = load_image('Resource\\Potato\\normal1.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
