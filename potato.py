@@ -42,7 +42,10 @@ class Idle:
 
     @staticmethod
     def draw(potato):
-        potato.image.clip_composite_draw(0, 0, 150, 150, 0, 'r', potato.x, potato.y + 20, potato.size, potato.size)
+        if potato.player == 0:
+            potato.image.clip_composite_draw(0, 0, 150, 150, 0, 'r', potato.x, potato.y + 20, potato.size, potato.size)
+        elif potato.player == 1:
+            potato.image2.clip_composite_draw(0, 0, 150, 150, 0, 'r', potato.x, potato.y + 20, potato.size, potato.size)
 
 
 # 좌우 이동
@@ -68,7 +71,10 @@ class Moving:
 
     @staticmethod
     def draw(potato):
-        potato.image.clip_composite_draw(0, 0, 150, 150, 0, 'r', potato.x, potato.y + 20, potato.size, potato.size)
+        if potato.player == 0:
+            potato.image.clip_composite_draw(0, 0, 150, 150, 0, 'r', potato.x, potato.y + 20, potato.size, potato.size)
+        elif potato.player == 1:
+            potato.image2.clip_composite_draw(0, 0, 150, 150, 0, 'r', potato.x, potato.y + 20, potato.size, potato.size)
 
 
 # 굴리기 전 파워 설정
@@ -97,7 +103,10 @@ class PowerCharging:
 
     @staticmethod
     def draw(potato):
-        potato.image.clip_composite_draw(0, 0, 150, 150, 0, 'r', potato.x, potato.y + 20, potato.size, potato.size)
+        if potato.player == 0:
+            potato.image.clip_composite_draw(0, 0, 150, 150, 0, 'r', potato.x, potato.y + 20, potato.size, potato.size)
+        elif potato.player == 1:
+            potato.image2.clip_composite_draw(0, 0, 150, 150, 0, 'r', potato.x, potato.y + 20, potato.size, potato.size)
         for i in range(0, potato.power):
             draw_rectangle(100, 300, 100 + i * 3.5, 400)
         draw_rectangle(100, 300, 450, 400)
@@ -111,9 +120,9 @@ class AngleAdjustment:
             point.dir = 1
         elif potato.way == 1:
             point.dir = -1
-        if potato.angle > 1.0:
+        if potato.angle > 1.5:
             potato.way = 1
-        elif potato.angle < -1.0:
+        elif potato.angle < -1.5:
             potato.way = 0
         potato.angle += point.dir * 0.02
 
@@ -129,7 +138,10 @@ class AngleAdjustment:
 
     @staticmethod
     def draw(potato):
-        potato.image.clip_composite_draw(0, 0, 150, 150, 0, 'r', potato.x, potato.y + 20, potato.size, potato.size)
+        if potato.player == 0:
+            potato.image.clip_composite_draw(0, 0, 150, 150, 0, 'r', potato.x, potato.y + 20, potato.size, potato.size)
+        elif potato.player == 1:
+            potato.image2.clip_composite_draw(0, 0, 150, 150, 0, 'r', potato.x, potato.y + 20, potato.size, potato.size)
         point.image.clip_composite_draw(0, 0, 150, 150, potato.angle, 'r', potato.x, potato.y + 120, 100, 100)
 
 
@@ -137,11 +149,13 @@ class AngleAdjustment:
 class Rolling:
     @staticmethod
     def do(potato):
+        # 굴러감
         potato.y += potato.speed
+        # 굴러가면서 크기 작아짐
         if potato.size > 10:
             potato.size -= potato.speed / 10
         # 감자의 각도에 따라 굴러가는 각도 변경
-        potato.x -= potato.angle / 2
+        potato.x -= potato.angle
         # 감자의 힘에 따라서 굴러가는 스핀 변경
         potato.spin += potato.power / 500
         # 일정 범위 넘으면 감자 위치 초기화
@@ -182,8 +196,10 @@ class Rolling:
 
     @staticmethod
     def draw(potato):
-        potato.image.clip_composite_draw(0, 0, 150, 150, potato.spin, 'r', potato.x, potato.y + 20, potato.size,
-                                         potato.size)
+        if potato.player == 0:
+            potato.image.clip_composite_draw(0, 0, 150, 150, potato.spin, 'r', potato.x, potato.y + 20, potato.size, potato.size)
+        elif potato.player == 1:
+            potato.image2.clip_composite_draw(0, 0, 150, 150, potato.spin, 'r', potato.x, potato.y + 20, potato.size, potato.size)
 
 
 class Giant:
@@ -224,7 +240,10 @@ class Giant:
 
     @staticmethod
     def draw(potato):
-        potato.image.clip_composite_draw(0, 0, 150, 150, 0, 'r', potato.x, potato.y + 20, potato.size, potato.size)
+        if potato.player == 0:
+            potato.image.clip_composite_draw(0, 0, 150, 150, 0, 'r', potato.x, potato.y + 20, potato.size, potato.size)
+        elif potato.player == 1:
+            potato.image2.clip_composite_draw(0, 0, 150, 150, 0, 'r', potato.x, potato.y + 20, potato.size, potato.size)
 
 
 class StateMachine:
@@ -277,6 +296,7 @@ class Potato:
         self.p1_ability = 2
         self.p2_ability = 2
         self.image = load_image('Resource\\Potato\\normal1.png')
+        self.image2 = load_image('Resource\\Potato\\giant1.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 
@@ -288,7 +308,7 @@ class Potato:
 
     def draw(self):
         self.state_machine.draw()
-        # draw_rectangle(*self.get_bb())
+        draw_rectangle(*self.get_bb())
 
     def get_bb(self):
         return self.x - self.bb - 10, self.y - self.bb, self.x + self.bb + 10, self.y + self.bb + 20

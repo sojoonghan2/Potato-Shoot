@@ -89,4 +89,3 @@ class Bottle:
                 # potato.crash += 1
                 pass
             self.state_machine.cur_state = Fly
-

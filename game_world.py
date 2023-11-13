@@ -46,7 +46,8 @@ def clear():
         layer.clear()
 
 
-def collide(a, b):
+def r_to_r_collide(a, b):
+    # 사각형과 사각형 충돌(충돌범위와 병의 충돌)
     la, ba, ra, ta = a.get_bb()
     lb, bb, rb, tb = b.get_bb()
 
@@ -73,6 +74,6 @@ def handle_collisions():
     for group, pairs in collision_pairs.items():
         for a in pairs[0]:
             for b in pairs[1]:
-                if collide(a, b):
+                if r_to_r_collide(a, b):
                     a.handle_collision(group, b)
                     b.handle_collision(group, a)
