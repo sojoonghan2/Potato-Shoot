@@ -270,7 +270,6 @@ class Potato:
         self.dir = 1
         self.way = 0
         self.turn = 2
-        self.case_num = 0
         self.size = 150
         self.speed = 5
         self.bb = 0
@@ -289,7 +288,7 @@ class Potato:
 
     def draw(self):
         self.state_machine.draw()
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def get_bb(self):
         return self.x - self.bb - 10, self.y - self.bb, self.x + self.bb + 10, self.y + self.bb + 20
