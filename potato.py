@@ -162,6 +162,13 @@ class Rolling:
                 potato.turn = 0
             if potato.turn == 0:
                 potato.turn = 2
+                if potato.player == 0:
+                    potato.player = 1
+                else:
+                    potato.player = 0
+                print('player')
+                print(potato.player + 1)
+                print('turn')
                 play_mode.next_stage()
             return
 
@@ -191,14 +198,25 @@ class Giant:
     def enter(potato, e):
         # 능력 발동을 한 상태가 아니면(중복 방지)
         if potato.size < 200:
-            # 능력 개수가 0이 아니면
-            if potato.ability > 0:
-                # 능력 개수를 1 깎음
-                potato.ability -= 1
-                # bb 범위 증가
-                potato.bb += 50
-            else:
-                potato.state_machine.cur_state = Idle
+            if potato.player == 0:
+                # 능력 개수가 0이 아니면
+                if potato.p1_ability > 0:
+                    # 능력 개수를 1 깎음
+                    potato.p1_ability -= 1
+                    # bb 범위 증가
+                    potato.bb += 50
+                else:
+                    potato.state_machine.cur_state = Idle
+            elif potato.player == 1:
+                # 능력 개수가 0이 아니면
+                if potato.p2_ability > 0:
+                    # 능력 개수를 1 깎음
+                    potato.p2_ability -= 1
+                    # bb 범위 증가
+                    potato.bb += 50
+                else:
+                    potato.state_machine.cur_state = Idle
+
 
     @staticmethod
     def exit(potato, e):
@@ -244,6 +262,7 @@ class StateMachine:
 
 class Potato:
     def __init__(self, x=300, y=90):
+        self.player = 0
         self.x, self.y = x, y
         self.spin = 0
         self.power = 0
@@ -256,7 +275,8 @@ class Potato:
         self.speed = 5
         self.bb = 0
         self.crash = 0
-        self.ability = 2
+        self.p1_ability = 2
+        self.p2_ability = 2
         self.image = load_image('Resource\\Potato\\normal1.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
