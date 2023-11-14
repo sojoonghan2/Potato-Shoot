@@ -196,9 +196,10 @@ class Rolling:
                 else:
                     potato.total_score(0)
                 # 10번째 턴은 3번 굴림
-                # 게임 종료시 프레임워크 변경(play_mode가 아닌 ending_mode로 넘어가도록 수정)
-                # game_framework.change_mode(play_mode)
-                pass
+                # 엔딩
+                # p1 > p2: game_framework.change_mode(ending_mode1)
+                # p1 < p2: game_framework.change_mode(ending_mode2)
+                # p1 == p2: game_framework.change_mode(ending_mode3)
                 # 플레이어 변경
                 if potato.player == 0:
                     potato.p1_score = 0
@@ -387,21 +388,23 @@ class Potato:
         if self.player == 0:
             # 스트라이크
             if type == 2:
-                print('스트라이크')
+                print('strike')
             # 스페어
             elif type == 1:
-                print('스페어')
+                print('spare')
             # 일반
             else:
+                self.p1_t_score += self.p1_score
                 print(self.p1_score)
         # p2
         elif self.player == 1:
             # 스트라이크
             if type == 2:
-                print('스트라이크')
+                print('strike')
             # 스페어
             elif type == 1:
-                print('스페어')
+                print('spare')
             # 일반
             else:
+                self.p2_t_score += self.p2_score
                 print(self.p2_score)
