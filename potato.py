@@ -199,6 +199,8 @@ class Giant:
                 if potato.p1_ability > 0:
                     # 능력 개수를 1 깎음
                     potato.p1_ability -= 1
+                    # 능력이 발동
+                    potato.giant = 1
                     # bb 범위 증가
                     potato.bb += 50
                 else:
@@ -208,6 +210,8 @@ class Giant:
                 if potato.p2_ability > 0:
                     # 능력 개수를 1 깎음
                     potato.p2_ability -= 1
+                    # 능력이 발동
+                    potato.giant = 1
                     # bb 범위 증가
                     potato.bb += 50
                 else:
@@ -272,6 +276,7 @@ class Potato:
         self.size = 150
         self.speed = 5
         self.bb = 0
+        self.giant = 0
         self.p1_ability = 2
         self.p2_ability = 2
         self.p1_f1_score = 0
@@ -307,22 +312,40 @@ class Potato:
         return self.x - self.bb - 10, self.y - self.bb, self.x + self.bb + 10, self.y + self.bb + 20
 
     def get_bb_c_1(self):
-        return self.x - 12, self.y + 2, self.x + 12, self.y + 54
+        if self.giant == 1:
+            return self.x - 22, self.y - 2, self.x + 22, self.y + 64
+        else:
+            return self.x - 12, self.y + 2, self.x + 12, self.y + 54
 
     def get_bb_c_2(self):
-        return self.x - 15, self.y + 5, self.x + 15, self.y + 51
+        if self.giant == 1:
+            return self.x - 25, self.y - 5, self.x + 25, self.y + 61
+        else:
+            return self.x - 15, self.y + 5, self.x + 15, self.y + 51
 
     def get_bb_c_3(self):
-        return self.x - 18, self.y + 8, self.x + 18, self.y + 48
+        if self.giant == 1:
+            return self.x - 28, self.y - 8, self.x + 28, self.y + 58
+        else:
+            return self.x - 18, self.y + 8, self.x + 18, self.y + 48
 
     def get_bb_c_4(self):
-        return self.x - 21, self.y + 11, self.x + 21, self.y + 45
+        if self.giant == 1:
+            return self.x - 31, self.y + 1, self.x + 31, self.y + 55
+        else:
+            return self.x - 21, self.y + 11, self.x + 21, self.y + 45
 
     def get_bb_c_5(self):
-        return self.x - 24, self.y + 13, self.x + 24, self.y + 42
+        if self.giant == 1:
+            return self.x - 34, self.y + 3, self.x + 34, self.y + 52
+        else:
+            return self.x - 24, self.y + 13, self.x + 24, self.y + 42
 
     def get_bb_c_6(self):
-        return self.x - 27, self.y + 17, self.x + 27, self.y + 39
+        if self.giant == 1:
+            return self.x - 37, self.y + 7, self.x + 37, self.y + 49
+        else:
+            return self.x - 27, self.y + 17, self.x + 27, self.y + 39
 
     def handle_collision_r(self, group, other):
         # 사각형과 사각형 충돌
@@ -347,6 +370,8 @@ class Potato:
         self.power = 0
         # 속도
         self.speed = 5
+        # 능력
+        self.giant = 0
         # 충돌범위
         self.bb = 0
         # 각도
@@ -371,10 +396,7 @@ class Potato:
             else:
                 self.total_score(0)
             # 턴 개수 회복
-            if self.t_turn == 10:
-                self.turn = 1
-            else:
-                self.turn = 2
+            self.turn = 2
             # 플레이어 변경
             if self.player == 0:
                 self.p1_f1_score = 0
