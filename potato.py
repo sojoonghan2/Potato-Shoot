@@ -184,8 +184,21 @@ class Rolling:
             potato.collision_ok = 0
             # 현재 상태
             potato.state_machine.cur_state = Idle
-            # 턴이 종료되면
+            # 턴 종료
             if potato.turn == 0 or potato.p1_score == 10 or potato.p2_score == 10:
+                # 점수 계산
+                if potato.turn == 1:
+                    potato.total_score(2)
+                elif potato.turn == 0 and potato.p1_score == 10:
+                    potato.total_score(1)
+                elif potato.turn == 0 and potato.p2_score == 10:
+                    potato.total_score(1)
+                else:
+                    potato.total_score(0)
+                # 10번째 턴은 3번 굴림
+                # 게임 종료시 프레임워크 변경(play_mode가 아닌 ending_mode로 넘어가도록 수정)
+                # game_framework.change_mode(play_mode)
+                pass
                 # 플레이어 변경
                 if potato.player == 0:
                     potato.p1_score = 0
@@ -196,15 +209,8 @@ class Rolling:
                     # 게임의 턴을 증가
                     potato.t_turn += 1
                     print('Frame', potato.t_turn + 1)
-                    # 게임이 종료되면
-                    if potato.t_turn == 10:
-                        # 프레임워크 변경(play_mode가 아닌 ending_mode로 넘어가도록 수정)
-                        game_framework.change_mode(play_mode)
-                # 턴 개수 회복(10번째 턴은 3번 굴림)
-                if potato.t_turn == 9:
-                    potato.turn = 3
-                else:
-                    potato.turn = 2
+                # 턴 개수 회복
+                potato.turn = 2
                 # next_state 활성화
                 play_mode.next_stage()
 
@@ -323,6 +329,7 @@ class Potato:
         self.p1_t_score = 0
         self.p2_t_score = 0
         self.t_turn = 0
+        self.last_stage = 0
         self.image = load_image('Resource\\Potato\\normal1.png')
         self.image2 = load_image('Resource\\Potato\\giant1.png')
         self.state_machine = StateMachine(self)
@@ -374,3 +381,27 @@ class Potato:
         # 사각형과 원 충돌
         if group == 'bottle:potato(c)':
             pass
+
+    def total_score(self, type):
+        # p1
+        if self.player == 0:
+            # 스트라이크
+            if type == 2:
+                print('스트라이크')
+            # 스페어
+            elif type == 1:
+                print('스페어')
+            # 일반
+            else:
+                print(self.p1_score)
+        # p2
+        elif self.player == 1:
+            # 스트라이크
+            if type == 2:
+                print('스트라이크')
+            # 스페어
+            elif type == 1:
+                print('스페어')
+            # 일반
+            else:
+                print(self.p2_score)
