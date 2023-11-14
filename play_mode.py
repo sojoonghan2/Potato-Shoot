@@ -1,12 +1,16 @@
 from pico2d import *
+from sdl2 import SDL_KEYDOWN
+
+import ending_mode1
+import ending_mode2
+import ending_mode3
 import game_framework
 import game_world
+import title_mode
+from bottle import Bottle
 from ground import Ground
 from potato import Potato
-from bottle import Bottle
 from water import Water
-from sdl2 import SDL_KEYDOWN
-import title_mode
 
 
 def handle_events():
@@ -100,6 +104,14 @@ def resume():
 
 
 def next_stage():
+    if potato.t_turn == 10:
+        if potato.p1_t_score > potato.p2_t_score:
+            game_framework.change_mode(ending_mode1)
+        elif potato.p1_t_score < potato.p2_t_score:
+            game_framework.change_mode(ending_mode2)
+        elif potato.p1_t_score == potato.p2_t_score:
+            game_framework.change_mode(ending_mode3)
+        return
     bottle_positions = [
         # 4열
         (150, 900), (230, 900), (310, 900), (390, 900),

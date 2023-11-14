@@ -4,6 +4,7 @@ from sdl2 import SDL_KEYDOWN, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_SPACE, SDLK
 import game_framework
 import play_mode
 from point import Point
+import ending_mode1, ending_mode2, ending_mode3
 
 
 def right_down(e): return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
@@ -271,10 +272,6 @@ class Potato:
         self.size = 150
         self.speed = 5
         self.bb = 0
-        self.p1_strike = 0
-        self.p1_spare = 0
-        self.p2_strike = 0
-        self.p2_spare = 0
         self.p1_ability = 2
         self.p2_ability = 2
         self.p1_f1_score = 0
@@ -338,6 +335,7 @@ class Potato:
             pass
 
     def reset_potato(self):
+        # 감자 속성 초기화
         # 위치
         self.x = 270
         self.y = 100
@@ -373,10 +371,6 @@ class Potato:
             else:
                 self.total_score(0)
             # 10번째 턴은 3번 굴림
-            # 엔딩
-            # p1 > p2: game_framework.change_mode(ending_mode1)
-            # p1 < p2: game_framework.change_mode(ending_mode2)
-            # p1 == p2: game_framework.change_mode(ending_mode3)
             # 플레이어 변경
             if self.player == 0:
                 self.p1_f1_score = 0
@@ -396,35 +390,32 @@ class Potato:
             play_mode.next_stage()
 
     def total_score(self, type):
+        # 점수 계산
         if self.player == 0:  # p1
             if type == 2:  # 스트라이크
-                self.p1_strike += 1
                 self.p1_t_score += 10 + self.p1_f1_score + self.p1_f2_score
-                print('strike')
+                print('p1_f1: strike')
+                print('p1_f2: strike')
             elif type == 1:  # 스페어
-                self.p1_spare += 1
                 self.p1_t_score += 10 + self.p1_f1_score
-                print('spare')
+                print('p1_f1: ', self.p1_f1_score)
+                print('p1_f2: spare')
             else:  # 일반
                 self.p1_t_score += self.p1_f1_score + self.p1_f2_score
                 print('p1_f1: ', self.p1_f1_score)
                 print('p1_f2: ', self.p1_f2_score)
-                self.p1_strike = 0
-                self.p1_spare = 0
             print('p1_t : ', self.p1_t_score)
         elif self.player == 1:  # p2
             if type == 2:  # 스트라이크
-                self.p2_strike += 1
                 self.p2_t_score += 10 + self.p2_f1_score + self.p2_f2_score
-                print('strike')
+                print('p2_f1: strike')
+                print('p2_f2: strike')
             elif type == 1:  # 스페어
-                self.p2_spare += 1
                 self.p2_t_score += 10 + self.p2_f1_score
-                print('spare')
+                print('p2_f1: ', self.p2_f1_score)
+                print('p2_f2: spare')
             else:  # 일반
                 self.p2_t_score += self.p2_f1_score + self.p2_f2_score
                 print('p2_f1: ', self.p2_f1_score)
                 print('p2_f2: ', self.p2_f2_score)
-                self.p2_strike = 0
-                self.p2_spare = 0
             print('p2_t : ', self.p2_t_score)
