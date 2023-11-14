@@ -161,59 +161,7 @@ class Rolling:
         potato.spin += potato.power / 500
         # 일정 범위 넘으면 감자 속성 초기화
         if potato.y > 1500:
-            # 위치
-            potato.x = 270
-            potato.y = 100
-            # 크기
-            potato.size = 150
-            # 스핀
-            potato.spin = 0
-            # 힘
-            potato.power = 0
-            # 속도
-            potato.speed = 5
-            # 충돌범위
-            potato.bb = 0
-            # 각도
-            potato.angle = 0
-            # dir
-            potato.dir = 1
-            # 현재 플레이어의 턴을 -1
-            potato.turn -= 1
-            # 충돌 ok
-            potato.collision_ok = 0
-            # 현재 상태
-            potato.state_machine.cur_state = Idle
-            # 턴 종료
-            if potato.turn == 0 or potato.p1_score == 10 or potato.p2_score == 10:
-                # 점수 계산
-                if potato.turn == 1:
-                    potato.total_score(2)
-                elif potato.turn == 0 and potato.p1_score == 10:
-                    potato.total_score(1)
-                elif potato.turn == 0 and potato.p2_score == 10:
-                    potato.total_score(1)
-                else:
-                    potato.total_score(0)
-                # 10번째 턴은 3번 굴림
-                # 엔딩
-                # p1 > p2: game_framework.change_mode(ending_mode1)
-                # p1 < p2: game_framework.change_mode(ending_mode2)
-                # p1 == p2: game_framework.change_mode(ending_mode3)
-                # 플레이어 변경
-                if potato.player == 0:
-                    potato.p1_score = 0
-                    potato.player = 1
-                else:
-                    potato.p2_score = 0
-                    potato.player = 0
-                    # 게임의 턴을 증가
-                    potato.t_turn += 1
-                    print('Frame', potato.t_turn + 1)
-                # 턴 개수 회복
-                potato.turn = 2
-                # next_state 활성화
-                play_mode.next_stage()
+            potato.reset_potato()
 
     @staticmethod
     def enter(potato, e):
@@ -382,6 +330,61 @@ class Potato:
         # 사각형과 원 충돌
         if group == 'bottle:potato(c)':
             pass
+
+    def reset_potato(self):
+        # 위치
+        self.x = 270
+        self.y = 100
+        # 크기
+        self.size = 150
+        # 스핀
+        self.spin = 0
+        # 힘
+        self.power = 0
+        # 속도
+        self.speed = 5
+        # 충돌범위
+        self.bb = 0
+        # 각도
+        self.angle = 0
+        # dir
+        self.dir = 1
+        # 현재 플레이어의 턴을 -1
+        self.turn -= 1
+        # 충돌 ok
+        self.collision_ok = 0
+        # 현재 상태
+        self.state_machine.cur_state = Idle
+        # 턴 종료
+        if self.turn == 0 or self.p1_score == 10 or self.p2_score == 10:
+            # 점수 계산
+            if self.turn == 1:
+                self.total_score(2)
+            elif self.turn == 0 and self.p1_score == 10:
+                self.total_score(1)
+            elif self.turn == 0 and self.p2_score == 10:
+                self.total_score(1)
+            else:
+                self.total_score(0)
+            # 10번째 턴은 3번 굴림
+            # 엔딩
+            # p1 > p2: game_framework.change_mode(ending_mode1)
+            # p1 < p2: game_framework.change_mode(ending_mode2)
+            # p1 == p2: game_framework.change_mode(ending_mode3)
+            # 플레이어 변경
+            if self.player == 0:
+                self.p1_score = 0
+                self.player = 1
+            else:
+                self.p2_score = 0
+                self.player = 0
+                # 게임의 턴을 증가
+                self.t_turn += 1
+                print('Frame', self.t_turn + 1)
+            # 턴 개수 회복
+            self.turn = 2
+            # next_state 활성화
+            play_mode.next_stage()
 
     def total_score(self, type):
         # p1
