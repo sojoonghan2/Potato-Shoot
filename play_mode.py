@@ -21,6 +21,7 @@ def handle_events():
 
 
 def init():
+    print('Frame 1')
     global running
     global ground
     global team

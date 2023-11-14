@@ -1,6 +1,7 @@
 from pico2d import load_image, draw_rectangle
 from sdl2 import SDL_KEYDOWN, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_SPACE, SDLK_a
 
+import game_framework
 import play_mode
 from point import Point
 
@@ -192,8 +193,18 @@ class Rolling:
                 else:
                     potato.p2_score = 0
                     potato.player = 0
-                # 턴 개수 회복
-                potato.turn = 2
+                    # 게임의 턴을 증가
+                    potato.t_turn += 1
+                    print('Frame', potato.t_turn + 1)
+                    # 게임이 종료되면
+                    if potato.t_turn == 10:
+                        # 프레임워크 변경(play_mode가 아닌 ending_mode로 넘어가도록 수정)
+                        game_framework.change_mode(play_mode)
+                # 턴 개수 회복(10번째 턴은 3번 굴림)
+                if potato.t_turn == 9:
+                    potato.turn = 3
+                else:
+                    potato.turn = 2
                 # next_state 활성화
                 play_mode.next_stage()
 
@@ -311,6 +322,7 @@ class Potato:
         self.p2_score = 0
         self.p1_t_score = 0
         self.p2_t_score = 0
+        self.t_turn = 0
         self.image = load_image('Resource\\Potato\\normal1.png')
         self.image2 = load_image('Resource\\Potato\\giant1.png')
         self.state_machine = StateMachine(self)
