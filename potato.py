@@ -271,10 +271,16 @@ class Potato:
         self.size = 150
         self.speed = 5
         self.bb = 0
+        self.p1_strike = 0
+        self.p1_spare = 0
+        self.p2_strike = 0
+        self.p2_spare = 0
         self.p1_ability = 2
         self.p2_ability = 2
-        self.p1_score = 0
-        self.p2_score = 0
+        self.p1_f1_score = 0
+        self.p1_f2_score = 0
+        self.p2_f1_score = 0
+        self.p2_f2_score = 0
         self.p1_t_score = 0
         self.p2_t_score = 0
         self.t_turn = 0
@@ -356,13 +362,13 @@ class Potato:
         # 현재 상태
         self.state_machine.cur_state = Idle
         # 턴 종료
-        if self.turn == 0 or self.p1_score == 10 or self.p2_score == 10:
+        if self.turn == 0 or self.p1_f1_score + self.p1_f2_score == 10 or self.p2_f1_score + self.p2_f2_score == 10:
             # 점수 계산
             if self.turn == 1:
                 self.total_score(2)
-            elif self.turn == 0 and self.p1_score == 10:
+            elif self.turn == 0 and self.p1_f1_score + self.p1_f2_score == 10:
                 self.total_score(1)
-            elif self.turn == 0 and self.p2_score == 10:
+            elif self.turn == 0 and self.p2_f1_score + self.p2_f2_score == 10:
                 self.total_score(1)
             else:
                 self.total_score(0)
@@ -373,13 +379,16 @@ class Potato:
             # p1 == p2: game_framework.change_mode(ending_mode3)
             # 플레이어 변경
             if self.player == 0:
-                self.p1_score = 0
+                self.p1_f1_score = 0
+                self.p1_f2_score = 0
                 self.player = 1
             else:
-                self.p2_score = 0
+                self.p2_f1_score = 0
+                self.p2_f2_score = 0
                 self.player = 0
                 # 게임의 턴을 증가
                 self.t_turn += 1
+                print('--------')
                 print('Frame', self.t_turn + 1)
             # 턴 개수 회복
             self.turn = 2
@@ -387,27 +396,35 @@ class Potato:
             play_mode.next_stage()
 
     def total_score(self, type):
-        # p1
-        if self.player == 0:
-            # 스트라이크
-            if type == 2:
+        if self.player == 0:  # p1
+            if type == 2:  # 스트라이크
+                self.p1_strike += 1
+                self.p1_t_score += 10 + self.p1_f1_score + self.p1_f2_score
                 print('strike')
-            # 스페어
-            elif type == 1:
+            elif type == 1:  # 스페어
+                self.p1_spare += 1
+                self.p1_t_score += 10 + self.p1_f1_score
                 print('spare')
-            # 일반
-            else:
-                self.p1_t_score += self.p1_score
-                print(self.p1_score)
-        # p2
-        elif self.player == 1:
-            # 스트라이크
-            if type == 2:
+            else:  # 일반
+                self.p1_t_score += self.p1_f1_score + self.p1_f2_score
+                print('p1_f1: ', self.p1_f1_score)
+                print('p1_f2: ', self.p1_f2_score)
+                self.p1_strike = 0
+                self.p1_spare = 0
+            print('p1_t : ', self.p1_t_score)
+        elif self.player == 1:  # p2
+            if type == 2:  # 스트라이크
+                self.p2_strike += 1
+                self.p2_t_score += 10 + self.p2_f1_score + self.p2_f2_score
                 print('strike')
-            # 스페어
-            elif type == 1:
+            elif type == 1:  # 스페어
+                self.p2_spare += 1
+                self.p2_t_score += 10 + self.p2_f1_score
                 print('spare')
-            # 일반
-            else:
-                self.p2_t_score += self.p2_score
-                print(self.p2_score)
+            else:  # 일반
+                self.p2_t_score += self.p2_f1_score + self.p2_f2_score
+                print('p2_f1: ', self.p2_f1_score)
+                print('p2_f2: ', self.p2_f2_score)
+                self.p2_strike = 0
+                self.p2_spare = 0
+            print('p2_t : ', self.p2_t_score)

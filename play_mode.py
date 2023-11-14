@@ -21,7 +21,6 @@ def handle_events():
 
 
 def init():
-    print('Frame 1')
     global running
     global ground
     global team
@@ -71,6 +70,9 @@ def init():
     for i in range(10):
         game_world.add_collision_pair('bottle:potato(r)', bottle[i], None)
         game_world.add_collision_pair('bottle:potato(c)', bottle[i], None)
+
+    print('--------')
+    print('Frame 1')
 
 
 def finish():

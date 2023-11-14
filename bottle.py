@@ -89,9 +89,15 @@ class Bottle:
             if play_mode.potato.collision_ok == 1:
                 if self.state_machine.cur_state == Idle:
                     if play_mode.potato.player == 0:
-                        play_mode.potato.p1_score += 1
+                        if play_mode.potato.turn == 2:
+                            play_mode.potato.p1_f1_score += 1
+                        elif play_mode.potato.turn == 1:
+                            play_mode.potato.p1_f2_score += 1
                     elif play_mode.potato.player == 1:
-                        play_mode.potato.p2_score += 1
+                        if play_mode.potato.turn == 2:
+                            play_mode.potato.p2_f1_score += 1
+                        elif play_mode.potato.turn == 1:
+                            play_mode.potato.p2_f2_score += 1
                 self.state_machine.cur_state = Fly
 
     def handle_collision_c(self, group, other):
