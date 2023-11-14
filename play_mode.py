@@ -97,7 +97,6 @@ def resume():
 
 
 def next_stage():
-    # 안됨
     bottle_positions = [
         # 4열
         (150, 900), (230, 900), (310, 900), (390, 900),

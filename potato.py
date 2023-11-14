@@ -158,29 +158,44 @@ class Rolling:
         potato.x -= potato.angle
         # 감자의 힘에 따라서 굴러가는 스핀 변경
         potato.spin += potato.power / 500
-        # 일정 범위 넘으면 감자 위치 초기화
+        # 일정 범위 넘으면 감자 속성 초기화
         if potato.y > 1500:
+            # 위치
             potato.x = 270
             potato.y = 100
+            # 크기
             potato.size = 150
+            # 스핀
             potato.spin = 0
+            # 힘
             potato.power = 0
+            # 속도
             potato.speed = 5
+            # 충돌범위
             potato.bb = 0
+            # 각도
             potato.angle = 0
+            # dir
             potato.dir = 1
+            # 현재 플레이어의 턴을 -1
             potato.turn -= 1
-            potato.case_num = 0
+            # 충돌 ok
             potato.collision_ok = 0
+            # 현재 상태
             potato.state_machine.cur_state = Idle
-            if potato.turn == 0:
-                potato.turn = 2
+            # 턴이 종료되면
+            if potato.turn == 0 or potato.p1_score == 10 or potato.p2_score == 10:
+                # 플레이어 변경
                 if potato.player == 0:
+                    potato.p1_score = 0
                     potato.player = 1
                 else:
+                    potato.p2_score = 0
                     potato.player = 0
+                # 턴 개수 회복
+                potato.turn = 2
+                # next_state 활성화
                 play_mode.next_stage()
-            return
 
     @staticmethod
     def enter(potato, e):
@@ -292,6 +307,10 @@ class Potato:
         self.bb = 0
         self.p1_ability = 2
         self.p2_ability = 2
+        self.p1_score = 0
+        self.p2_score = 0
+        self.p1_t_score = 0
+        self.p2_t_score = 0
         self.image = load_image('Resource\\Potato\\normal1.png')
         self.image2 = load_image('Resource\\Potato\\giant1.png')
         self.state_machine = StateMachine(self)

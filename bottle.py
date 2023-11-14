@@ -87,6 +87,11 @@ class Bottle:
         # 사각형과 사각형 충돌
         if group == 'bottle:potato(r)':
             if play_mode.potato.collision_ok == 1:
+                if self.state_machine.cur_state == Idle:
+                    if play_mode.potato.player == 0:
+                        play_mode.potato.p1_score += 1
+                    elif play_mode.potato.player == 1:
+                        play_mode.potato.p2_score += 1
                 self.state_machine.cur_state = Fly
 
     def handle_collision_c(self, group, other):
@@ -94,4 +99,3 @@ class Bottle:
         if group == 'bottle:potato(c)':
             # 사각형과 사각형 충돌이 가능하게 됨
             play_mode.potato.collision_ok = 1
-            print(play_mode.potato.collision_ok)
