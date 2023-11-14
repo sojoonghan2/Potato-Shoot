@@ -370,7 +370,11 @@ class Potato:
                 self.total_score(1)
             else:
                 self.total_score(0)
-            # 10번째 턴은 3번 굴림
+            # 턴 개수 회복
+            if self.t_turn == 10:
+                self.turn = 1
+            else:
+                self.turn = 2
             # 플레이어 변경
             if self.player == 0:
                 self.p1_f1_score = 0
@@ -384,8 +388,6 @@ class Potato:
                 self.t_turn += 1
                 print('--------')
                 print('Frame', self.t_turn + 1)
-            # 턴 개수 회복
-            self.turn = 2
             # next_state 활성화
             play_mode.next_stage()
 

@@ -104,7 +104,7 @@ def resume():
 
 
 def next_stage():
-    if potato.t_turn == 10:
+    if potato.t_turn == 11:
         if potato.p1_t_score > potato.p2_t_score:
             game_framework.change_mode(ending_mode1)
         elif potato.p1_t_score < potato.p2_t_score:
