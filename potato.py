@@ -274,7 +274,7 @@ class ScoreCheck:
                 potato.font.draw(100 + (i * 35), 600, '/', (0, 0, 0))
             elif potato.p1_ss[i] == 0:
                 potato.font.draw(100 + (i * 35), 600, f'{potato.p1_save_f2_score[i]:d}', (0, 0, 0))
-            potato.font.draw(90 + (i * 35), 570, f'{potato.p1_save_f_score[i]:d}', (0, 0, 0))
+            potato.font.draw(80 + (i * 35), 570, f'{potato.p1_save_f_score[i]:d}', (0, 0, 0))
         for i in range(potato.t_turn):
             if potato.p2_ss[i] == 2:
                 potato.font.draw(80 + (i * 35), 500, 'X', (0, 0, 0))
@@ -284,7 +284,7 @@ class ScoreCheck:
                 potato.font.draw(100 + (i * 35), 500, '/', (0, 0, 0))
             elif potato.p2_ss[i] == 0:
                 potato.font.draw(100 + (i * 35), 500, f'{potato.p2_save_f2_score[i]:d}', (0, 0, 0))
-            potato.font.draw(90 + (i * 35), 470, f'{potato.p2_save_f_score[i]:d}', (0, 0, 0))
+            potato.font.draw(80 + (i * 35), 470, f'{potato.p2_save_f_score[i]:d}', (0, 0, 0))
 
 
 class StateMachine:
