@@ -266,12 +266,24 @@ class ScoreCheck:
         potato.font.draw(450, 490, f'{potato.p2_t_score:d}', (0, 0, 0))
         # 중간 점수 출력
         for i in range(potato.t_turn):
-            potato.font.draw(80 + (i * 35), 600, f'{potato.p1_save_f1_score[i]:d}', (0, 0, 0))
-            potato.font.draw(100 + (i * 35), 600, f'{potato.p1_save_f2_score[i]:d}', (0, 0, 0))
+            if potato.p1_ss[i] == 2:
+                potato.font.draw(80 + (i * 35), 600, 'X', (0, 0, 0))
+            else:
+                potato.font.draw(80 + (i * 35), 600, f'{potato.p1_save_f1_score[i]:d}', (0, 0, 0))
+            if potato.p1_ss[i] == 1:
+                potato.font.draw(100 + (i * 35), 600, '/', (0, 0, 0))
+            elif potato.p1_ss[i] == 0:
+                potato.font.draw(100 + (i * 35), 600, f'{potato.p1_save_f2_score[i]:d}', (0, 0, 0))
             potato.font.draw(90 + (i * 35), 570, f'{potato.p1_save_f_score[i]:d}', (0, 0, 0))
         for i in range(potato.t_turn):
-            potato.font.draw(80 + (i * 35), 500, f'{potato.p2_save_f1_score[i]:d}', (0, 0, 0))
-            potato.font.draw(100 + (i * 35), 500, f'{potato.p2_save_f2_score[i]:d}', (0, 0, 0))
+            if potato.p2_ss[i] == 2:
+                potato.font.draw(80 + (i * 35), 500, 'X', (0, 0, 0))
+            else:
+                potato.font.draw(80 + (i * 35), 500, f'{potato.p2_save_f1_score[i]:d}', (0, 0, 0))
+            if potato.p2_ss[i] == 1:
+                potato.font.draw(100 + (i * 35), 500, '/', (0, 0, 0))
+            elif potato.p2_ss[i] == 0:
+                potato.font.draw(100 + (i * 35), 500, f'{potato.p2_save_f2_score[i]:d}', (0, 0, 0))
             potato.font.draw(90 + (i * 35), 470, f'{potato.p2_save_f_score[i]:d}', (0, 0, 0))
 
 
@@ -339,6 +351,8 @@ class Potato:
         self.p2_save_f1_score = []
         self.p1_save_f2_score = []
         self.p2_save_f2_score = []
+        self.p1_ss = []
+        self.p2_ss = []
         self.image = load_image('Resource\\Potato\\normal1.png')
         self.image2 = load_image('Resource\\Potato\\giant1.png')
         self.state_machine = StateMachine(self)
@@ -483,28 +497,34 @@ class Potato:
         if self.player == 0:  # p1
             if type == 2:  # 스트라이크
                 self.p1_t_score += 10 + self.p1_f1_score + self.p1_f2_score
+                self.p1_ss.append(2)
                 print('p1_f1: strike')
                 print('p1_f2: strike')
             elif type == 1:  # 스페어
                 self.p1_t_score += 10 + self.p1_f1_score
+                self.p1_ss.append(1)
                 print('p1_f1: ', self.p1_f1_score)
                 print('p1_f2: spare')
             else:  # 일반
                 self.p1_t_score += self.p1_f1_score + self.p1_f2_score
+                self.p1_ss.append(0)
                 print('p1_f1: ', self.p1_f1_score)
                 print('p1_f2: ', self.p1_f2_score)
             print('p1_t : ', self.p1_t_score)
         elif self.player == 1:  # p2
             if type == 2:  # 스트라이크
                 self.p2_t_score += 10 + self.p2_f1_score + self.p2_f2_score
+                self.p2_ss.append(2)
                 print('p2_f1: strike')
                 print('p2_f2: strike')
             elif type == 1:  # 스페어
                 self.p2_t_score += 10 + self.p2_f1_score
+                self.p2_ss.append(1)
                 print('p2_f1: ', self.p2_f1_score)
                 print('p2_f2: spare')
             else:  # 일반
                 self.p2_t_score += self.p2_f1_score + self.p2_f2_score
+                self.p2_ss.append(0)
                 print('p2_f1: ', self.p2_f1_score)
                 print('p2_f2: ', self.p2_f2_score)
             print('p2_t : ', self.p2_t_score)
