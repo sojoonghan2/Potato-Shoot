@@ -255,10 +255,24 @@ class ScoreCheck:
             potato.image.clip_composite_draw(0, 0, 150, 150, 0, 'r', potato.x, potato.y + 20, potato.size, potato.size)
         elif potato.player == 1:
             potato.image2.clip_composite_draw(0, 0, 150, 150, 0, 'r', potato.x, potato.y + 20, potato.size, potato.size)
+        # 보드판 출력
         board1.image.clip_composite_draw(0, 0, 700, 100, 0, 'r', 250, 600, 500, 100)
         board2.image.clip_composite_draw(0, 0, 700, 100, 0, 'r', 250, 500, 500, 100)
+        # P1, P2 출력
         potato.font.draw(40, 590, 'P1', (0, 0, 0))
         potato.font.draw(40, 490, 'P2', (0, 0, 0))
+        # 총점 출력
+        potato.font.draw(450, 590, f'{potato.p1_t_score:d}', (0, 0, 0))
+        potato.font.draw(450, 490, f'{potato.p2_t_score:d}', (0, 0, 0))
+        # 중간 점수 출력
+        for i in range(potato.t_turn):
+            potato.font.draw(80 + (i * 35), 600, f'{potato.p1_save_f1_score[i]:d}', (0, 0, 0))
+            potato.font.draw(100 + (i * 35), 600, f'{potato.p1_save_f2_score[i]:d}', (0, 0, 0))
+            potato.font.draw(90 + (i * 35), 570, f'{potato.p1_save_f_score[i]:d}', (0, 0, 0))
+        for i in range(potato.t_turn):
+            potato.font.draw(80 + (i * 35), 500, f'{potato.p2_save_f1_score[i]:d}', (0, 0, 0))
+            potato.font.draw(100 + (i * 35), 500, f'{potato.p2_save_f2_score[i]:d}', (0, 0, 0))
+            potato.font.draw(90 + (i * 35), 470, f'{potato.p2_save_f_score[i]:d}', (0, 0, 0))
 
 
 class StateMachine:
@@ -319,6 +333,12 @@ class Potato:
         self.p1_t_score = 0
         self.p2_t_score = 0
         self.t_turn = 0
+        self.p1_save_f_score = []
+        self.p2_save_f_score = []
+        self.p1_save_f1_score = []
+        self.p2_save_f1_score = []
+        self.p1_save_f2_score = []
+        self.p2_save_f2_score = []
         self.image = load_image('Resource\\Potato\\normal1.png')
         self.image2 = load_image('Resource\\Potato\\giant1.png')
         self.state_machine = StateMachine(self)
@@ -433,10 +453,16 @@ class Potato:
                 self.total_score(0)
             # 플레이어 변경
             if self.player == 0:
+                self.p1_save_f1_score.append(self.p1_f1_score)
+                self.p1_save_f2_score.append(self.p1_f2_score)
+                self.p1_save_f_score.append(self.p1_t_score)
                 self.p1_f1_score = 0
                 self.p1_f2_score = 0
                 self.player = 1
             else:
+                self.p2_save_f1_score.append(self.p2_f1_score)
+                self.p2_save_f2_score.append(self.p2_f2_score)
+                self.p2_save_f_score.append(self.p2_t_score)
                 self.p2_f1_score = 0
                 self.p2_f2_score = 0
                 self.player = 0
