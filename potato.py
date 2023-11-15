@@ -1,9 +1,10 @@
-from pico2d import load_image, draw_rectangle
-from sdl2 import SDL_KEYDOWN, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_SPACE, SDLK_a
+from pico2d import load_image, draw_rectangle, load_font
+from sdl2 import SDL_KEYDOWN, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_SPACE, SDLK_a, SDLK_b
 
 import game_framework
 import play_mode
 from point import Point
+from board import Board
 import ending_mode1, ending_mode2, ending_mode3
 
 
@@ -26,6 +27,9 @@ def space_up(e): return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key 
 
 
 def a_down(e): return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_a
+
+
+def b_down(e): return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_b
 
 
 # 대기
@@ -229,13 +233,42 @@ class Giant:
             potato.image2.clip_composite_draw(0, 0, 150, 150, 0, 'r', potato.x, potato.y + 20, potato.size, potato.size)
 
 
+class ScoreCheck:
+    @staticmethod
+    def do(potato):
+        pass
+
+    @staticmethod
+    def enter(potato, e):
+        global board1
+        global board2
+        board1 = Board(0, 0)
+        board2 = Board(0, 0)
+
+    @staticmethod
+    def exit(potato, e):
+        pass
+
+    @staticmethod
+    def draw(potato):
+        if potato.player == 0:
+            potato.image.clip_composite_draw(0, 0, 150, 150, 0, 'r', potato.x, potato.y + 20, potato.size, potato.size)
+        elif potato.player == 1:
+            potato.image2.clip_composite_draw(0, 0, 150, 150, 0, 'r', potato.x, potato.y + 20, potato.size, potato.size)
+        board1.image.clip_composite_draw(0, 0, 700, 100, 0, 'r', 250, 600, 500, 100)
+        board2.image.clip_composite_draw(0, 0, 700, 100, 0, 'r', 250, 500, 500, 100)
+        potato.font.draw(40, 590, 'P1', (0, 0, 0))
+        potato.font.draw(40, 490, 'P2', (0, 0, 0))
+
+
 class StateMachine:
     def __init__(self, potato):
         self.potato = potato
         self.cur_state = Idle
         self.table = {
             Idle: {right_down: Moving, left_down: Moving, left_up: Moving, right_up: Moving, space_down: PowerCharging,
-                   a_down: Giant},
+                   a_down: Giant, b_down: ScoreCheck},
+            ScoreCheck: {b_down: Idle, space_down: Idle},
             Moving: {right_down: Idle, left_down: Idle, left_up: Idle, right_up: Idle},
             PowerCharging: {space_down: AngleAdjustment},
             AngleAdjustment: {space_down: Rolling},
@@ -286,11 +319,11 @@ class Potato:
         self.p1_t_score = 0
         self.p2_t_score = 0
         self.t_turn = 0
-        self.last_stage = 0
         self.image = load_image('Resource\\Potato\\normal1.png')
         self.image2 = load_image('Resource\\Potato\\giant1.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
+        self.font = load_font('ENCR10B.TTF', 16)
 
     def update(self):
         self.state_machine.update()
@@ -385,18 +418,19 @@ class Potato:
         # 현재 상태
         self.state_machine.cur_state = Idle
         # 턴 종료
-        if self.turn == 0 or self.p1_f1_score + self.p1_f2_score == 10 or self.p2_f1_score + self.p2_f2_score == 10:
+        if self.turn <= 0 or self.p1_f1_score + self.p1_f2_score == 10 or self.p2_f1_score + self.p2_f2_score == 10:
             # 점수 계산
+            # 스트라이크
             if self.turn == 1:
                 self.total_score(2)
+            # 스페어
             elif self.turn == 0 and self.p1_f1_score + self.p1_f2_score == 10:
                 self.total_score(1)
+            # 스페어
             elif self.turn == 0 and self.p2_f1_score + self.p2_f2_score == 10:
                 self.total_score(1)
             else:
                 self.total_score(0)
-            # 턴 개수 회복
-            self.turn = 2
             # 플레이어 변경
             if self.player == 0:
                 self.p1_f1_score = 0
@@ -410,6 +444,11 @@ class Potato:
                 self.t_turn += 1
                 print('--------')
                 print('Frame', self.t_turn + 1)
+            # 턴 개수 회복
+            if self.t_turn != 10:
+                self.turn = 2
+            else:
+                self.turn = 1
             # next_state 활성화
             play_mode.next_stage()
 
