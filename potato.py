@@ -367,6 +367,10 @@ class Potato:
 
     def draw(self):
         self.state_machine.draw()
+        if self.t_turn == 1:
+            self.font.draw(330, 750, '!last frame!', (0, 0, 0))
+        else:
+            self.font.draw(370, 750, f'frame: {self.t_turn + 1:d}', (0, 0, 0))
         draw_rectangle(*self.get_bb_r())
         draw_rectangle(*self.get_bb_c_1())
         draw_rectangle(*self.get_bb_c_2())
@@ -459,10 +463,18 @@ class Potato:
                 self.total_score(2)
             # 스페어
             elif self.turn == 0 and self.p1_f1_score + self.p1_f2_score == 10:
-                self.total_score(1)
+                # last frame에서 다 쓰러뜨리면 스트라이크 처리
+                if self.t_turn == 10:
+                    self.total_score(2)
+                else:
+                    self.total_score(1)
             # 스페어
             elif self.turn == 0 and self.p2_f1_score + self.p2_f2_score == 10:
-                self.total_score(1)
+                # last frame에서 다 쓰러뜨리면 스트라이크 처리
+                if self.t_turn == 10:
+                    self.total_score(2)
+                else:
+                    self.total_score(1)
             else:
                 self.total_score(0)
             # 플레이어 변경
