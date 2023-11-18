@@ -367,7 +367,7 @@ class Potato:
 
     def draw(self):
         self.state_machine.draw()
-        if self.t_turn == 1:
+        if self.t_turn == 10:
             self.font.draw(330, 750, '!last frame!', (0, 0, 0))
         else:
             self.font.draw(370, 750, f'frame: {self.t_turn + 1:d}', (0, 0, 0))
