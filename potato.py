@@ -1,4 +1,4 @@
-from pico2d import load_image, draw_rectangle, load_font
+from pico2d import load_image, draw_rectangle, load_font, load_wav
 from sdl2 import SDL_KEYDOWN, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_SPACE, SDLK_a, SDLK_b
 
 import game_framework
@@ -170,7 +170,7 @@ class Rolling:
 
     @staticmethod
     def enter(potato, e):
-        pass
+        potato.rollingBGM.play()
 
     @staticmethod
     def exit(potato, e):
@@ -358,6 +358,8 @@ class Potato:
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.font = load_font('ENCR10B.TTF', 16)
+        self.rollingBGM = load_wav('Resource\\BGM\\rollingBGM.mp3')
+        self.rollingBGM.set_volume(15)
 
     def update(self):
         self.state_machine.update()

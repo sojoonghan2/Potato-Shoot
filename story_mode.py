@@ -2,14 +2,15 @@ from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDLK_SPACE
 import game_framework
 from pico2d import get_events, load_image, clear_canvas, update_canvas, load_music
 import play_mode
-from ground import Ground
 
 
 def init():
     global image
-    global ground
+    global bgm
     image = load_image('Resource\\Ground\\story.png')
-    ground = Ground()
+    bgm = load_music('Resource\\BGM\\backgroundBGM.mp3')
+    bgm.set_volume(32)
+    bgm.repeat_play()
 
 
 def finish():
