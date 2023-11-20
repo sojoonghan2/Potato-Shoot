@@ -362,7 +362,7 @@ class Potato:
         self.rollingBGM = load_wav('Resource\\BGM\\rollingBGM.mp3')
         self.rollingBGM.set_volume(15)
         self.giantBGM = load_wav('Resource\\BGM\\giantBGM.mp3')
-        self.giantBGM.set_volume(15)
+        self.giantBGM.set_volume(20)
         self.powerchargingBGM = load_wav('Resource\\BGM\\powerchargingBGM.mp3')
         self.powerchargingBGM.set_volume(15)
 
@@ -378,13 +378,14 @@ class Potato:
             self.font.draw(330, 750, '!last frame!', (0, 0, 0))
         else:
             self.font.draw(370, 750, f'frame: {self.t_turn + 1:d}', (0, 0, 0))
-        draw_rectangle(*self.get_bb_r())
-        draw_rectangle(*self.get_bb_c_1())
-        draw_rectangle(*self.get_bb_c_2())
-        draw_rectangle(*self.get_bb_c_3())
-        draw_rectangle(*self.get_bb_c_4())
-        draw_rectangle(*self.get_bb_c_5())
-        draw_rectangle(*self.get_bb_c_6())
+        # 바운드 박스
+        # draw_rectangle(*self.get_bb_r())
+        # draw_rectangle(*self.get_bb_c_1())
+        # draw_rectangle(*self.get_bb_c_2())
+        # draw_rectangle(*self.get_bb_c_3())
+        # draw_rectangle(*self.get_bb_c_4())
+        # draw_rectangle(*self.get_bb_c_5())
+        # draw_rectangle(*self.get_bb_c_6())
 
     def get_bb_r(self):
         return self.x - self.bb - 10, self.y - self.bb, self.x + self.bb + 10, self.y + self.bb + 20

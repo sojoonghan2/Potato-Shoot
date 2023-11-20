@@ -1,12 +1,16 @@
 from sdl2 import SDL_QUIT, SDL_KEYDOWN, SDLK_ESCAPE, SDLK_SPACE
 import game_framework
-from pico2d import get_events, load_image, clear_canvas, update_canvas, get_time
+from pico2d import get_events, load_image, clear_canvas, update_canvas, load_music
 import title_mode
 
 
 def init():
     global image
     image = load_image('Resource\\Ground\\ending3.png')
+    global bgm
+    bgm = load_music('Resource\\BGM\\endingBGM.mp3')
+    bgm.set_volume(20)
+    bgm.play()
 
 
 def finish():

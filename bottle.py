@@ -1,6 +1,6 @@
 import random
 
-from pico2d import load_image, draw_rectangle, get_time
+from pico2d import load_image, draw_rectangle, get_time, load_wav
 import play_mode
 
 
@@ -69,10 +69,13 @@ class Bottle:
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.angle = random.randint(1, 6)
+        self.collisionBGM = load_wav('Resource\\BGM\\collisionBGM.mp3')
+        self.collisionBGM.set_volume(15)
 
     def draw(self):
         self.state_machine.draw()
-        draw_rectangle(*self.get_bb_r())
+        # 바운드 박스
+        # draw_rectangle(*self.get_bb_r())
 
     def handle_event(self, event):
         pass
@@ -104,4 +107,6 @@ class Bottle:
         # 사각형과 원 충돌
         if group == 'bottle:potato(c)':
             # 사각형과 사각형 충돌이 가능하게 됨
+            if play_mode.potato.collision_ok == 0:
+                self.collisionBGM.play()
             play_mode.potato.collision_ok = 1

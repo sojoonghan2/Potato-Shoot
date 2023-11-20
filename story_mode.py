@@ -9,7 +9,7 @@ def init():
     global bgm
     image = load_image('Resource\\Ground\\story.png')
     bgm = load_music('Resource\\BGM\\backgroundBGM.mp3')
-    bgm.set_volume(32)
+    bgm.set_volume(20)
     bgm.repeat_play()
 
 
