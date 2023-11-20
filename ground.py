@@ -1,4 +1,4 @@
-from pico2d import load_image
+from pico2d import load_image, load_music
 import random
 
 class Ground:
@@ -10,6 +10,9 @@ class Ground:
             self.image = load_image('Resource\\Ground\\Ground2.png')
         else:
             self.image = load_image('Resource\\Ground\\Ground3.png')
+        self.bgm = load_music('Resource\\BGM\\background.mp3')
+        self.bgm.set_volume(32)
+        self.bgm.repeat_play()
 
     def draw(self):
         self.image.draw_to_origin(0, 0, 540, 960)
