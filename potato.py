@@ -100,7 +100,7 @@ class PowerCharging:
 
     @staticmethod
     def enter(potato, e):
-        pass
+        potato.powerchargingBGM.play()
 
     @staticmethod
     def exit(potato, e):
@@ -196,6 +196,7 @@ class Giant:
 
     @staticmethod
     def enter(potato, e):
+        potato.giantBGM.play()
         # 능력 발동을 한 상태가 아니면(중복 방지)
         if potato.size < 200:
             if potato.player == 0:
@@ -360,6 +361,10 @@ class Potato:
         self.font = load_font('ENCR10B.TTF', 16)
         self.rollingBGM = load_wav('Resource\\BGM\\rollingBGM.mp3')
         self.rollingBGM.set_volume(15)
+        self.giantBGM = load_wav('Resource\\BGM\\giantBGM.mp3')
+        self.giantBGM.set_volume(15)
+        self.powerchargingBGM = load_wav('Resource\\BGM\\powerchargingBGM.mp3')
+        self.powerchargingBGM.set_volume(15)
 
     def update(self):
         self.state_machine.update()
