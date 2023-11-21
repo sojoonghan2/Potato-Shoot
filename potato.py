@@ -241,6 +241,7 @@ class ScoreCheck:
 
     @staticmethod
     def enter(potato, e):
+        potato.scorecheckBGM.play()
         global board1
         global board2
         board1 = Board(0, 0)
@@ -365,6 +366,8 @@ class Potato:
         self.giantBGM.set_volume(20)
         self.powerchargingBGM = load_wav('Resource\\BGM\\powerchargingBGM.mp3')
         self.powerchargingBGM.set_volume(15)
+        self.scorecheckBGM = load_wav('Resource\\BGM\\scorecheckBGM.mp3')
+        self.scorecheckBGM.set_volume(15)
 
     def update(self):
         self.state_machine.update()
