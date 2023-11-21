@@ -62,7 +62,7 @@ class Moving:
             return
         if potato.x < 140 and potato.dir == -1:
             return
-        potato.x += potato.dir * 1
+        potato.x += potato.dir
 
     @staticmethod
     def enter(potato, e):
