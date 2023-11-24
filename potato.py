@@ -297,7 +297,7 @@ class StateMachine:
             Idle: {right_down: Moving, left_down: Moving, left_up: Moving, right_up: Moving, space_down: PowerCharging,
                    a_down: Giant, b_down: ScoreCheck},
             ScoreCheck: {b_down: Idle, space_down: Idle},
-            Moving: {right_down: Idle, left_down: Idle, left_up: Idle, right_up: Idle},
+            Moving: {right_down: Idle, left_down: Idle, left_up: Idle, right_up: Idle, space_down: PowerCharging},
             PowerCharging: {space_down: AngleAdjustment},
             AngleAdjustment: {space_down: Rolling},
             Giant: {},
