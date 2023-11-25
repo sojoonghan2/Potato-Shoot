@@ -196,12 +196,13 @@ class Giant:
 
     @staticmethod
     def enter(potato, e):
-        potato.giantBGM.play()
         # 능력 발동을 한 상태가 아니면(중복 방지)
         if potato.size < 200:
             if potato.player == 0:
                 # 능력 개수가 0이 아니면
                 if potato.p1_ability > 0:
+                    # 효과음 재생
+                    potato.giantBGM.play()
                     # 능력 개수를 1 깎음
                     potato.p1_ability -= 1
                     # 능력이 발동
@@ -213,6 +214,8 @@ class Giant:
             elif potato.player == 1:
                 # 능력 개수가 0이 아니면
                 if potato.p2_ability > 0:
+                    # 효과음 재생
+                    potato.giantBGM.play()
                     # 능력 개수를 1 깎음
                     potato.p2_ability -= 1
                     # 능력이 발동
