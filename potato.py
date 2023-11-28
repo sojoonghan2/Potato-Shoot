@@ -87,13 +87,6 @@ class Moving:
 class PowerCharging:
     @staticmethod
     def do(potato):
-        # 디버깅 코드
-        # 파워를 강제로 변환
-        # 높은 파워
-        # potato.power = 90
-        # 낮은 파워
-        # potato.power = 10
-        # 직접 조작
         potato.power += 1
         if potato.power > 100:
             potato.power = 0
