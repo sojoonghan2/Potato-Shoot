@@ -74,8 +74,6 @@ class Bottle:
 
     def draw(self):
         self.state_machine.draw()
-        # 바운드 박스
-        # draw_rectangle(*self.get_bb_r())
 
     def handle_event(self, event):
         pass

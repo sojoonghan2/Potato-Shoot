@@ -1,6 +1,7 @@
 from pico2d import load_image, load_music
 import random
 
+
 class Ground:
     def __init__(self):
         stage = random.randint(0, 2)
