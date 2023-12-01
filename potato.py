@@ -123,7 +123,7 @@ class AngleAdjustment:
             potato.way = 1
         elif potato.angle < -1.5:
             potato.way = 0
-        potato.angle += point.dir * 0.02
+        potato.angle += point.dir * 0.01
 
     @staticmethod
     def enter(potato, e):
@@ -150,10 +150,7 @@ class Rolling:
     def do(potato):
         # 굴러감
         potato.speed * game_framework.frame_time
-        potato.y += potato.speed
-        # 굴러가면서 크기 작아짐
-        if potato.size > 10:
-            potato.size -= potato.speed / 10
+        potato.y += potato.speed / 2
         # 감자의 각도에 따라 굴러가는 각도 변경
         potato.x -= potato.angle
         # 감자의 힘에 따라서 굴러가는 스핀 변경
