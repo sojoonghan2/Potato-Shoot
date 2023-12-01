@@ -149,6 +149,7 @@ class Rolling:
     @staticmethod
     def do(potato):
         # 굴러감
+        potato.speed * game_framework.frame_time
         potato.y += potato.speed
         # 굴러가면서 크기 작아짐
         if potato.size > 10:
